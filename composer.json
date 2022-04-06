@@ -1,0 +1,37 @@
+{
+    "name": "veryard/vultr",
+    "description": "Vultr is a cloud platform for hosting, virtualization, and networking.",
+    "homepage": "https://www.vultr.com/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "veryard",
+            "email": "bradveryard@gmail.com",
+            "homepage": "https://veryard.dev"
+        }
+    ],
+    "require": {
+        "php": "^7.4.15 || ^8.0.2",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "guzzlehttp/guzzle": "^7.4",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Vultr\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Vultr\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
