@@ -2,7 +2,7 @@
 
 namespace Vultr\Endpoint;
 
-class OS extends AbstractEndpoint
+class OperatingSystems extends AbstractEndpoint
 {
     public function list()
     {

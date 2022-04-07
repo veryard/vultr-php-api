@@ -11,7 +11,7 @@ use Vultr\Endpoint\Billing;
 use Vultr\Endpoint\Dns;
 use Vultr\Endpoint\Instances;
 use Vultr\Endpoint\LoadBalancers;
-use Vultr\Endpoint\OS;
+use Vultr\Endpoint\OperatingSystems;
 use Vultr\Endpoint\Plans;
 use Vultr\Endpoint\Regions;
 use Vultr\Endpoint\ReservedIps;
@@ -81,7 +81,7 @@ class Client {
 
     public function os()
     {
-        return new OS($this->adapter);
+        return new OperatingSystems($this->adapter);
     }
 
     public function sshKeys()
