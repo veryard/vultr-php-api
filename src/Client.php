@@ -10,6 +10,7 @@ use Vultr\Endpoint\Backups;
 use Vultr\Endpoint\Billing;
 use Vultr\Endpoint\Dns;
 use Vultr\Endpoint\Instances;
+use Vultr\Endpoint\LoadBalancers;
 use Vultr\Endpoint\OS;
 use Vultr\Endpoint\Plans;
 use Vultr\Endpoint\Regions;
@@ -96,5 +97,10 @@ class Client {
     public function reserveredIps()
     {
         return new ReservedIps($this->adapter);
+    }
+
+    public function loadBalancers()
+    {
+        return new LoadBalancers($this->adapter);
     }
 }
