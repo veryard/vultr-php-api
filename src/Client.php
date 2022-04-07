@@ -13,6 +13,9 @@ use Vultr\Endpoint\Instances;
 use Vultr\Endpoint\OS;
 use Vultr\Endpoint\Plans;
 use Vultr\Endpoint\Regions;
+use Vultr\Endpoint\ReservedIps;
+use Vultr\Endpoint\Snapshots;
+use Vultr\Endpoint\SshKeys;
 use Vultr\Endpoint\StartupScripts;
 use Vultr\Endpoint\Users;
 
@@ -78,5 +81,20 @@ class Client {
     public function os()
     {
         return new OS($this->adapter);
+    }
+
+    public function sshKeys()
+    {
+        return new SshKeys($this->adapter);
+    }
+
+    public function snapshots()
+    {
+        return new Snapshots($this->adapter);
+    }
+
+    public function reserveredIps()
+    {
+        return new ReservedIps($this->adapter);
     }
 }

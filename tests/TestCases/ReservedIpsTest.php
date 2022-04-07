@@ -4,14 +4,14 @@ namespace Vultr\Tests\TestCases;
 
 use Vultr\Tests\VultrTest;
 
-class RegionsTest extends VultrTest
+class ReservedIpsTest extends VultrTest
 {
     /**
      * @test
      */
-    public function testSnapshotsList(): void
+    public function testListReservedIps(): void
     {
-        $response = $this->client->regions()->list();
+        $response = $this->client->reserveredIps()->list();
 
         $this->assertIsArray($response);
     }

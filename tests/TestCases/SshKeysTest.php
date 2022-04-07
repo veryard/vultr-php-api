@@ -4,14 +4,14 @@ namespace Vultr\Tests\TestCases;
 
 use Vultr\Tests\VultrTest;
 
-class RegionsTest extends VultrTest
+class SshKeysTest extends VultrTest
 {
     /**
      * @test
      */
-    public function testSnapshotsList(): void
+    public function testListSshKeys(): void
     {
-        $response = $this->client->regions()->list();
+        $response = $this->client->sshKeys()->list();
 
         $this->assertIsArray($response);
     }
