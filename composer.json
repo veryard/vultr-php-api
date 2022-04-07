@@ -1,5 +1,5 @@
 {
-    "name": "veryard/vultr",
+    "name": "veryard/vultr-php-api",
     "description": "Vultr is a cloud platform for hosting, virtualization, and networking.",
     "homepage": "https://www.vultr.com/",
     "license": "MIT",
