@@ -53,8 +53,8 @@ class CurlAdapter extends AbstractAdapter
 
     protected function query($url, array $args, $method, $getCode = false)
     {
+        
         $url = $this->endpoint . $url;
-
         $options = [
             CURLOPT_USERAGENT => Client::USER_AGENT,
             CURLOPT_HEADER => 0,
@@ -75,55 +75,50 @@ class CurlAdapter extends AbstractAdapter
         ];
 
         switch($method) {
-            case 'POST':
-                $data = http_build_query($args);
-                $options[CURLOPT_POST] = 1;
-                $options[CURLOPT_POSTFIELDS] = $data;
-                break;
-
             case 'GET':
                 if(!empty($args)) {
                     $data = http_build_query($args);
-                    $url .= '&' . $data;
+                    $url .= '?' . $data;
                 }
-
+                break;
+                
+            case 'POST':
+                $options[CURLOPT_POST] = 1;
+                $options[CURLOPT_POSTFIELDS] = json_encode($args);
                 break;
 
             case 'DELETE':
-                $data = http_build_query($args);
                 $options[CURLOPT_CUSTOMREQUEST] = 'DELETE';
-                $options[CURLOPT_POSTFIELDS] = $data;
+                $options[CURLOPT_POSTFIELDS] = json_encode($args);
                 break;
             
             case 'PUT':
-                $data = http_build_query($args);
                 $options[CURLOPT_CUSTOMREQUEST] = 'PUT';
-                $options[CURLOPT_POSTFIELDS] = $data;
+                $options[CURLOPT_POSTFIELDS] = json_encode($args);
                 break;
 
             case 'PATCH':
-                $data = http_build_query($args);
                 $options[CURLOPT_CUSTOMREQUEST] = 'PATCH';
-                $options[CURLOPT_POSTFIELDS] = $data;
+                $options[CURLOPT_POSTFIELDS] = json_encode($args);
                 break;
         }
-        
+
         $curl = curl_init($url);
         curl_setopt_array($curl, $options);
         $response = curl_exec($curl);
 
-        $this->hasError($curl, $response, $getCode);
+        $result = json_decode($response, true);
+
+        $this->hasError($curl, $result, $getCode);
 
         if($getCode) {
             return $this->responseCode;
         }
 
-        $result = json_decode($response, true);
-
         return $result;
     }
 
-    protected function hasError($curl, $response, $getCode)
+    protected function hasError($curl, $result, $getCode)
     {
         $error = curl_error($curl);
         if(!empty($error)) {
@@ -133,11 +128,15 @@ class CurlAdapter extends AbstractAdapter
         $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
+        if(isset($result['status'])) {
+            if($result['status'] != 200) {
+                throw new ApiException($result['error']);
+            }
+        }
+
         if($getCode) {
             $this->responseCode = $code;
             return;
         }
-
-        $this->emitError($code, $response);
     }
 }
