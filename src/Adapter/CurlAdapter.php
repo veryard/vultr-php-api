@@ -107,7 +107,7 @@ class CurlAdapter extends AbstractAdapter
         curl_setopt_array($curl, $options);
         $response = curl_exec($curl);
 
-        $result = json_decode($response, true);
+        $result = json_decode($response);
 
         $this->hasError($curl, $result, $getCode);
 
@@ -128,9 +128,9 @@ class CurlAdapter extends AbstractAdapter
         $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
-        if(isset($result['status'])) {
-            if($result['status'] != 200) {
-                throw new ApiException($result['error']);
+        if(isset($result->status)) {
+            if($result->status != 200) {
+                throw new ApiException($result->error);
             }
         }
 

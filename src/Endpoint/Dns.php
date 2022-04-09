@@ -2,11 +2,17 @@
 
 namespace Vultr\Endpoint;
 
+use Vultr\Entity\DomainEntity;
+
 class Dns extends AbstractEndpoint
 {
     public function listDomains()
     {
-        return $this->adapter->get('domains');
+        $domains = $this->adapter->get('dns/list');
+
+        return array_map(function ($domain) {
+            return new DomainEntity($domain);
+        }, $domains->domains);
     }
 
     public function createDomain($domain, $ip = null, $dns_sec = null)
@@ -22,12 +28,16 @@ class Dns extends AbstractEndpoint
             $params['dns_sec'] = $dns_sec;
         }
 
-        return $this->adapter->post('domains', $params);
+        $domain = $this->adapter->post('domains', $params);
+
+        return new DomainEntity($domain->domain);
     }
 
     public function getDnsDomain($dns_domain)
     {
-        return $this->adapter->get('domains/' . $dns_domain);
+        $domain = $this->adapter->get('domains/' . $dns_domain);
+
+        return new DomainEntity($domain->domain);
     }
 
     public function deleteDomain($dns_domain)

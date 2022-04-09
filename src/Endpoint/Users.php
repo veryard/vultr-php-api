@@ -2,6 +2,8 @@
 
 namespace Vultr\Endpoint;
 
+use Vultr\Entity\UserEntity;
+
 class Users extends AbstractEndpoint
 {
     public function getUsers($per_page = null, $cursor = null)
@@ -13,12 +15,19 @@ class Users extends AbstractEndpoint
         if ($cursor) {
             $params['cursor'] = $cursor;
         }
-        return $this->adapter->get('users', $params);
+
+        $users = $this->adapter->get('users', $params);
+        
+        return array_map(function ($user) {
+            return new UserEntity($user);
+        }, $users->users);
     }
 
     public function getUser($user_id)
     {
-        return $this->adapter->get('users/' . $user_id);
+        $user = $this->adapter->get('users/' . $user_id);
+
+        return new UserEntity($user->user);
     }
 
     public function deleteUser($user_id)
@@ -45,6 +54,8 @@ class Users extends AbstractEndpoint
             throw new \InvalidArgumentException('Password is required');
         }
 
-        return $this->adapter->post('users', $params);
+        $user = $this->adapter->post('users', $params);
+
+        return new UserEntity($user->user);
     }
 }

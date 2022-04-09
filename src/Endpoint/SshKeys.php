@@ -2,11 +2,15 @@
 
 namespace Vultr\Endpoint;
 
+use Vultr\Entity\SshKeyEntity;
+
 class SshKeys extends AbstractEndpoint
 {
     public function get($ssh_key_id)
-    {
-        return $this->adapter->get('ssh-keys/' . $ssh_key_id);
+    {   
+        $key = $this->adapter->get('ssh-keys/' . $ssh_key_id);
+
+        return new SshKeyEntity($key->ssh_key);
     }
 
     public function update($ssh_key_id, array $data = array())
@@ -29,7 +33,11 @@ class SshKeys extends AbstractEndpoint
             $params['cursor'] = $cursor;
         }
 
-        return $this->adapter->get('ssh-keys', $params);
+        $keys = $this->adapter->get('ssh-keys', $params);
+
+        return array_map(function ($key) {
+            return new SshKeyEntity($key);
+        }, $keys->ssh_keys);
     }
 
     public function create(array $data)
@@ -42,6 +50,8 @@ class SshKeys extends AbstractEndpoint
             throw new \InvalidArgumentException('ssh_key is required');
         }
         
-        return $this->adapter->post('ssh-keys', $data);
+        $key = $this->adapter->post('ssh-keys', $data);
+
+        return new SshKeyEntity($key->ssh_key);
     }
 }

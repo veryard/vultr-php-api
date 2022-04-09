@@ -2,10 +2,14 @@
 
 namespace Vultr\Endpoint;
 
+use Vultr\Entity\AccountEntity;
+
 class Account extends AbstractEndpoint
 {
-    public function getAccountInfo()
+    public function getAccountInfo(): AccountEntity
     {
-        return $this->adapter->get('account');
+        $account = $this->adapter->get('account');
+
+        return new AccountEntity($account->account);
     }
 }

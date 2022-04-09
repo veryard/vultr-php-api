@@ -2,6 +2,8 @@
 
 namespace Vultr\Endpoint;
 
+use Vultr\Entity\SnapshotEntity;
+
 class Snapshots extends AbstractEndpoint
 {
     public function delete($snapshot_id)
@@ -11,7 +13,9 @@ class Snapshots extends AbstractEndpoint
 
     public function get($snapshot_id)
     {
-        return $this->adapter->get('snapshots/' . $snapshot_id);
+        $snapshot = $this->adapter->get('snapshots/' . $snapshot_id);
+
+        return new SnapshotEntity($snapshot->snapshot);
     }
 
     public function update($snapshot_id, $description)
@@ -36,7 +40,11 @@ class Snapshots extends AbstractEndpoint
             $params['cursor'] = $cursor;
         }
 
-        return $this->adapter->get('snapshots', $params);
+        $snapshots = $this->adapter->get('snapshots', $params);
+
+        return array_map(function ($snapshot) {
+            return new SnapshotEntity($snapshot);
+        }, $snapshots->snapshots);
     }
 
     public function create($instance_id, $description = null)
@@ -49,7 +57,9 @@ class Snapshots extends AbstractEndpoint
             $params['description'] = $description;
         }
 
-        return $this->adapter->post('snapshots', $params);
+        $snapshot = $this->adapter->post('snapshots', $params);
+
+        return new SnapshotEntity($snapshot->snapshot);
     }
 
     public function createFromUrl($instance_id, $url, $description = null)
@@ -63,7 +73,9 @@ class Snapshots extends AbstractEndpoint
             $params['description'] = $description;
         }
 
-        return $this->adapter->post('snapshots/create-from-url', $params);
+        $snapshot = $this->adapter->post('snapshots/create-from-url', $params);
+
+        return new SnapshotEntity($snapshot->snapshot);
     }
 
 }

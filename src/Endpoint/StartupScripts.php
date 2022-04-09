@@ -2,11 +2,15 @@
 
 namespace Vultr\Endpoint;
 
+use Vultr\Entity\StartupScriptEntity;
+
 class StartupScripts extends AbstractEndpoint
 {
     public function get($startup_id)
     {
-        return $this->adapter->get('startup-scripts/' . $startup_id);
+        $script = $this->adapter->get('startup-scripts/' . $startup_id);
+
+        return new StartupScriptEntity($script->startup_script);
     }
 
     public function delete($startup_id)
@@ -21,7 +25,11 @@ class StartupScripts extends AbstractEndpoint
 
     public function list()
     {
-        return $this->adapter->get('startup-scripts');
+        $scripts = $this->adapter->get('startup-scripts');
+
+        return array_map(function ($script) {
+            return new StartupScriptEntity($script);
+        }, $scripts->startup_scripts);
     }
 
     public function create($params)
@@ -34,6 +42,8 @@ class StartupScripts extends AbstractEndpoint
             throw new \InvalidArgumentException('Script is required');
         }
 
-        return $this->adapter->post('startup-scripts', $params);
+        $script = $this->adapter->post('startup-scripts', $params);
+
+        return new StartupScriptEntity($script->startup_script);
     }
 }
