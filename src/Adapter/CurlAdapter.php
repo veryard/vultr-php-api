@@ -61,7 +61,6 @@ class CurlAdapter extends AbstractAdapter
             CURLOPT_VERBOSE => 0,
             CURLOPT_SSL_VERIFYPEER => 0,
             CURLOPT_SSL_VERIFYHOST => 0,
-            CURLOPT_HTTP_VERSION => '1.0',
             CURLOPT_FOLLOWLOCATION => 0,
             CURLOPT_FRESH_CONNECT => 1,
             CURLOPT_RETURNTRANSFER => 1,
