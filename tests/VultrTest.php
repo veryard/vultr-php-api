@@ -17,7 +17,7 @@ class VultrTest extends TestCase
 
         $this->client = new Client(
             new CurlAdapter(
-                'UPFWTZFR7VZ7NQBWX4RTKP6NR7ASNYS22FGQ'
+                'TOKEN HERE'
             )
         );
     }
